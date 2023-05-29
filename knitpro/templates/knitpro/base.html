@@ -1,15 +1,77 @@
 <!doctype html>
-<html lang=en>
-  <head>
+<html lang="en">
+<head>
     <title>Knitting Projects</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width; initial-scale=1">
-  </head>
-  <body>
-   <header>
-   </header>
-   {% block "content" %}
-     <h1>Things</h1>
-   {% endblock "content" %}
-  </body>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        header {
+            background-color: #F8F8F8;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        h2 {
+            color: #333;
+            font-family: "Helvetica Neue", Arial, sans-serif;
+        }
+        
+        .header-links {
+            list-style-type: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+        
+        .header-links li {
+            display: inline-block;
+            margin-right: 10px;
+        }
+        
+        .header-links li a {
+            color: #555;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .header-links li a:hover {
+            background-color: #EEE;
+        }
+        
+        body {
+            font-family: "Helvetica Neue", Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.5;
+        }
+        
+        .content {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+    </style>
+</head>
+<body>
+    {% if user.is_authenticated %}
+    <header>
+        <h2>Cozy Knits</h2>
+        <ul class="header-links">
+            <li><a href="/">Projects</a></li>
+            <li><a href="/yarn">Yarns</a></li>
+            <li><a href="/logout">Logout</a></li>
+            {{ user.name }}
+        </ul>
+    </header>
+    {% endif %}
+    
+    <div class="content">
+        {% block "content" %}
+        <h1>Things</h1>
+        {% endblock %}
+    </div>
+</body>
 </html>

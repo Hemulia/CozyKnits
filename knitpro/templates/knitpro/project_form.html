@@ -1,14 +1,54 @@
 {% extends "knitpro/base.html" %}
 
 {% block "content" %}
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Next"> 
-  </form>
+    <style>
+        /* Custom styles for the content */
+        form {
+            margin-bottom: 20px;
+        }
+        
+        input[type="submit"] {
+            background-color: #96AE96;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        input[type="submit"]:hover {
+            background-color: #999;
+        }
+        
+        p {
+            margin: 10px 0;
+        }
+        
+        a {
+            color: #555;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+        
+        a:hover {
+            color: #999;
+        }
 
-  {% if object %}
+        .cancel:hover {
+        	color:red;
+        }
+    </style>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Next">
+    </form>
+
+    {% if object %}
     <p><a href="/project/{{ object.pk }}/delete">Delete</a></p>
-  {% endif %}
-  <a href="/">Cancel</a>
+    {% endif %}
+    <a class="cancel" href="/">Cancel</a>
 {% endblock "content" %}

@@ -1,22 +1,51 @@
 {% extends "knitpro/base.html" %}
 
 {% block "content" %}
-	<h1>Projects</h1>
-	<ul>
-	  {% for project in projects %}
-	    <li>
-	      <a href="/project/{{ project.pk }}">{{ project }}</a>
-	      <ul>
-	        {% for yarn in project.yarn_set.all %}
-	          <li>{{ yarn.name }}</li>
-	        {% endfor %}
-	      </ul>
-	    </li>
-	  {% empty %}
-	    <li>No projects yet.</li>
-	  {% endfor %}
-	</ul>
+    <style>
+        /* Custom styles for the content */
+        h1,h5 {
+            color: #555;
+            font-family: "Helvetica Neue", Arial, sans-serif;
+        }
+        
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        
+        li {
+            margin-bottom: 10px;
+        }
+        
+        a {
+            color: #555;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+        
+        a:hover {
+            color: #999;
+        }
+    </style>
 
-	<a href="/project/new">Create a new project</a>
-	<a href="/yarn/">See all your yarns!</a>
+    <h1>Projects</h1>
+    <ul>
+        {% for project in projects %}
+        <li>
+            <a href="/project/{{ project.pk }}">{{ project }}
+            Started: {{ project.start_time }}</a>
+            <ul>
+           <h5> Yarns used in this project:</h5>
+                {% for yarn in project.yarn_set.all %}
+                <li>{{ yarn.name }}</li>
+                {% endfor %}
+            </ul>
+        </li>
+        {% empty %}
+        <li>No projects yet.</li>
+        {% endfor %}
+    </ul>
+
+    <a href="/project/new">Create a new project</a>
 {% endblock "content" %}

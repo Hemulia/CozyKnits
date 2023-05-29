@@ -1,0 +1,11 @@
+{% extends "knitpro/base.html" %}
+
+{% block "content" %}
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Save"> 
+  </form>
+  <a href="/">Cancel</a>
+  <a href="/login">Already a user? Sign in here </a>
+{% endblock "content" %}
