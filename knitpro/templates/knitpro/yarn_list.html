@@ -1,0 +1,17 @@
+{% extends "knitpro/base.html" %}
+
+{% block "content" %}
+	<h1>Projects</h1>
+	<ul>
+	  {% for yarn in yarns %}
+	    <li>
+	      <a href="/yarn/{{ yarn.pk }}">{{ yarn }}</a>
+	    </li>
+	  {% empty %}
+	    <li>No projects yet.</li>
+	  {% endfor %}
+	</ul>
+
+	<a href="/yarn/new">Create a new yarn</a>
+	<a href="/">Go Back</a>
+{% endblock "content" %}

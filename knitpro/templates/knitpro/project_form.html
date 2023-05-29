@@ -1,0 +1,14 @@
+{% extends "knitpro/base.html" %}
+
+{% block "content" %}
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Next"> 
+  </form>
+
+  {% if object %}
+    <p><a href="/project/{{ object.pk }}/delete">Delete</a></p>
+  {% endif %}
+  <a href="/">Cancel</a>
+{% endblock "content" %}

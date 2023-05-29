@@ -1,0 +1,19 @@
+{% extends "knitpro/base.html" %}
+
+{% block "content" %}
+  <h1>Create a new Yarn</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <label for="id_existing_yarn">Or select existing yarn:</label>
+    <select id="id_existing_yarn" name="existing_yarn">
+      <option value="">---------</option>
+      {% for yarn in existing_yarns %}
+        <option value="{{ yarn.pk }}">{{ yarn.name }}</option>
+      {% endfor %}
+    </select>
+    <input type="submit" value="Save">
+  </form>
+
+  <a href="/">Cancel</a>
+{% endblock "content" %}
