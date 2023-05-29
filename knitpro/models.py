@@ -13,6 +13,7 @@ class Project(models.Model):
         return self.name
     
 class Yarn(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     name = models.CharField(max_length=255,blank=True)
     brand = models.CharField(max_length=155, blank=True)
     weight = models.CharField(max_length=20, blank=True) 

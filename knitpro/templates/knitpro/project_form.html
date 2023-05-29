@@ -2,7 +2,6 @@
 
 {% block "content" %}
     <style>
-        /* Custom styles for the content */
         form {
             margin-bottom: 20px;
         }
@@ -36,7 +35,7 @@
             color: #999;
         }
 
-        .cancel:hover {
+        .delete:hover {
         	color:red;
         }
     </style>
@@ -48,7 +47,7 @@
     </form>
 
     {% if object %}
-    <p><a href="/project/{{ object.pk }}/delete">Delete</a></p>
+    <p><a class="delete" href="/project/{{ object.pk }}/delete">Delete</a></p>
     {% endif %}
-    <a class="cancel" href="/">Cancel</a>
+    <a href="/">Cancel</a>
 {% endblock "content" %}

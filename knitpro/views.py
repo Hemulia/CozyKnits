@@ -42,61 +42,86 @@ class ProjectDeleteView(UserPassesTestMixin, DeleteView):
 
 class YarnCreateView(LoginRequiredMixin, CreateView):
     model = Yarn
-    fields = ['name', 'brand', 'length', 'project']
+    fields = ['name', 'brand', 'length']
     success_url = "/"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['existing_yarns'] = Yarn.objects.all()  # Queryset of existing yarns
+        context['existing_yarns'] = Yarn.objects.filter(user=self.request.user).exclude(name='')
+        context['existing_projects'] = Project.objects.filter(user=self.request.user)
         return context
 
     def form_valid(self, form):
-        existing_yarn_pk = self.request.POST.get('existing_yarn')  # Get the selected existing yarn
+        existing_yarn_pk = self.request.POST.get('existing_yarn')
 
         if existing_yarn_pk:
             existing_yarn = get_object_or_404(Yarn, pk=existing_yarn_pk)
-            project_pk = self.request.POST.get('project')  # Get the selected project
+            project_pk = self.request.POST.get('project')
+
             if project_pk:
                 existing_yarn.project_id = project_pk
             else:
                 existing_yarn.project = None
-            existing_yarn.save()
-            return super().form_valid(form)
 
+            form.instance = existing_yarn
+            return super().form_valid(form)
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+        
+    def form_valid(self, form):
+        form.instance.user = self.request.user
         return super().form_valid(form)
 
 class YarnUpdateView(UserPassesTestMixin, UpdateView):
     model = Yarn
-    fields = ['name','brand','length', 'project']
-    success_url= "/"
+    fields = ['name', 'brand', 'length']
+    success_url = "/"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['existing_yarns'] = Yarn.objects.all()  # Queryset of existing yarns
+        context['existing_yarns'] = Yarn.objects.filter(user=self.request.user).exclude(name='')
+        context['existing_projects'] = Project.objects.filter(user=self.request.user)
         return context
 
     def form_valid(self, form):
-        existing_yarn_pk = self.request.POST.get('existing_yarn')  # Get the selected existing yarn
+        existing_yarn_pk = self.request.POST.get('existing_yarn')
 
         if existing_yarn_pk:
-            existing_yarn = Yarn.objects.get(pk=existing_yarn_pk)
-            
-        self.object = form.save(commit=False)  # Create the object but don't save it yet
+            existing_yarn = get_object_or_404(Yarn, pk=existing_yarn_pk)
+            project_pk = self.request.POST.get('project')
 
-        if not self.object.project:
-            self.object.project = None
+            if project_pk:
+                existing_yarn.project_id = project_pk
+            else:
+                existing_yarn.project = None
 
-        self.object.save() 
-
+            form.instance = existing_yarn
+            return super().form_valid(form)
+        form.instance.user = self.request.user
         return super().form_valid(form)
-    
+        
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+        
+    def test_func(self):
+        yarn = self.get_object()
+        return self.request.user == yarn.user
+        
 class YarnListView(LoginRequiredMixin, ListView):
     model = Yarn
     context_object_name = 'yarns'
 
-class YarnDeleteView(UserPassesTestMixin,DeleteView):
+    def get_queryset(self):
+        return super().get_queryset().filter(user=self.request.user)
+
+class YarnDeleteView(UserPassesTestMixin, DeleteView):
     model = Yarn
     success_url = "/"
+
+    def get_queryset(self):
+        return super().get_queryset().filter(user=self.request.user)
+
 
 class RegisterView( CreateView):
 	form_class = UserCreationForm

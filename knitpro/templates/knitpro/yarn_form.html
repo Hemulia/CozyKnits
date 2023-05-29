@@ -1,19 +1,69 @@
 {% extends "knitpro/base.html" %}
 
 {% block "content" %}
+  <style>
+      form {
+          margin-bottom: 20px;
+      }
+      
+      input[type="submit"] {
+          background-color: #96AE96;
+          color: #fff;
+          border: none;
+          padding: 10px 20px;
+          font-size: 16px;
+          border-radius: 4px;
+          cursor: pointer;
+      }
+      
+      input[type="submit"]:hover {
+          background-color: #999;
+      }
+      
+      p {
+          margin: 10px 0;
+      }
+      
+      a {
+          color: #555;
+          text-decoration: none;
+          font-weight: bold;
+          transition: color 0.3s ease;
+      }
+      
+      a:hover {
+          color: #999;
+      }
+
+      .delete:hover {
+      	color:red;
+      }
+  </style>
+  
   <h1>Create a new Yarn</h1>
   <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
     <label for="id_existing_yarn">Or select existing yarn:</label>
     <select id="id_existing_yarn" name="existing_yarn">
-      <option value="">---------</option>
+      <option value=""></option>
       {% for yarn in existing_yarns %}
         <option value="{{ yarn.pk }}">{{ yarn.name }}</option>
       {% endfor %}
     </select>
+    <label for="id_project">Or select existing project:</label>
+    <select id="id_project" name="project">
+      <option value=""></option>
+      {% for project in existing_projects %}
+        <option value="{{ project.pk }}">{{ project.name }}</option>
+      {% endfor %}
+    </select>
     <input type="submit" value="Save">
   </form>
+  
+    {% if yarn %}
+    	<p><a class="delete" href="/yarn/{{ yarn.pk }}/delete">Delete</a></p>
+    {% endif %}
 
   <a href="/">Cancel</a>
 {% endblock "content" %}
